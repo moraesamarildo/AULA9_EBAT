@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TouchDesigner · Material do Aluno · EBAT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --purple:      #7200CA;
+      --purple-deep: #4A0087;
+      --yellow:      #FFB800;
+      --magenta:     #E0178C;
+      --red-orange:  #E83A00;
+      --blue:        #0078D8;
+      --black:       #1A1A1A;
+      --white:       #FFFFFF;
+      --pink-bg:     #F9EEF2;
+      --gray-100:    #F4F4F6;
+      --gray-200:    #E8E8EE;
+      --gray-400:    #A0A0B0;
+      --gray-600:    #606070;
+      --gray-800:    #2C2C3A;
+
+      --gradient: linear-gradient(90deg, #E83A00 0%, #E0178C 40%, #7200CA 75%, #0078D8 100%);
+
+      --f-display: 'Space Grotesk', sans-serif;
+      --f-body:    'IBM Plex Sans', sans-serif;
+      --f-mono:    'IBM Plex Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--f-body);
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--black);
+      background: var(--white);
+    }
+
+    /* ── accent bar ── */
+    .top-bar {
+      height: 5px;
+      background: var(--gradient);
+    }
+
+    /* ── hero ── */
+    .hero {
+      background: var(--black);
+      padding: 64px 40px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gradient);
+    }
+
+    .hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--f-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--yellow);
+    }
+
+    .hero h1 {
+      font-family: var(--f-display);
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--yellow);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--gray-400);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    /* ── layout ── */
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 40px 100px;
+    }
+
+    /* ── section titles ── */
+    .section {
+      padding-top: 72px;
+    }
+
+    .section-label {
+      font-family: var(--f-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: var(--f-display);
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--black);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--gray-600);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--gray-200);
+      margin: 72px 0 0;
+    }
+
+    /* ── exercise steps ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 40px;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--gray-200);
+      transition: border-color 200ms, box-shadow 200ms;
+    }
+
+    .step:hover {
+      border-color: rgba(114,0,202,0.25);
+      box-shadow: 0 4px 20px rgba(114,0,202,0.06);
+    }
+
+    .step-num {
+      font-family: var(--f-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--purple);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-body {}
+
+    .step-title {
+      font-family: var(--f-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .step-time {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--purple);
+      background: rgba(114,0,202,0.08);
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 15px;
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .step p:last-child { margin-bottom: 0; }
+
+    /* ── network / spec template ── */
+    .spec-box {
+      background: var(--black);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 24px 0 0;
+    }
+
+    .spec-box-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .spec-box-header span {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--yellow);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .spec-box pre {
+      padding: 20px;
+      font-family: var(--f-mono);
+      font-size: 13px;
+      line-height: 1.7;
+      color: #C8D3F5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .spec-box pre .comment {
+      color: rgba(200,211,245,0.35);
+    }
+
+    /* ── callout ── */
+    .callout {
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+
+    .callout-purple {
+      background: rgba(114,0,202,0.06);
+      border: 1px solid rgba(114,0,202,0.15);
+    }
+
+    .callout-yellow {
+      background: rgba(255,184,0,0.07);
+      border: 1px solid rgba(255,184,0,0.25);
+    }
+
+    .callout-label {
+      font-family: var(--f-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .callout-purple .callout-label { color: var(--purple); }
+    .callout-yellow .callout-label { color: #8B6500; }
+
+    .callout p {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--black);
+    }
+
+    /* ── question block ── */
+    .questions {
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .question {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px 20px;
+      background: var(--pink-bg);
+      border-radius: 10px;
+    }
+
+    .question-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .question p {
+      font-size: 15px;
+      color: var(--black);
+      line-height: 1.55;
+    }
+
+    /* ── refs ── */
+    .ref-category {
+      margin-bottom: 52px;
+    }
+
+    .ref-cat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .ref-cat-tag {
+      font-family: var(--f-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--purple);
+      padding: 5px 14px;
+      border-radius: 9999px;
+    }
+
+    .ref-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ref-item {
+      padding: 18px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--gray-200);
+      transition: border-color 180ms, transform 180ms, box-shadow 180ms;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+      text-decoration: none;
+    }
+
+    .ref-item:hover {
+      border-color: var(--purple);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(114,0,202,0.08);
+    }
+
+    .ref-item-name {
+      font-family: var(--f-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 3px;
+    }
+
+    .ref-item-desc {
+      font-size: 13.5px;
+      color: var(--gray-600);
+      line-height: 1.5;
+    }
+
+    .ref-item-url {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--purple);
+      margin-top: 6px;
+      word-break: break-all;
+    }
+
+    .ref-arrow {
+      font-size: 18px;
+      color: var(--gray-200);
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: color 180ms;
+    }
+
+    .ref-item:hover .ref-arrow {
+      color: var(--purple);
+    }
+
+    /* ── glossary ── */
+    .gloss-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .gloss-card {
+      background: var(--gray-100);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .gloss-term {
+      font-family: var(--f-mono);
+      font-size: 12px;
+      color: var(--purple);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .gloss-def {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.5;
+    }
+
+    /* ── tools grid ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 24px 0;
+    }
+
+    .tool-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 18px 20px;
+      text-decoration: none;
+      transition: border-color 180ms, box-shadow 180ms;
+      display: block;
+    }
+
+    .tool-card:hover {
+      border-color: var(--purple);
+      box-shadow: 0 4px 16px rgba(114,0,202,0.08);
+    }
+
+    .tool-name {
+      font-family: var(--f-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+
+    .tool-desc {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .tool-url {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--purple);
+    }
+
+    /* ── footer ── */
+    .footer {
+      background: var(--black);
+      margin-top: 80px;
+      padding: 36px 40px;
+    }
+
+    .footer-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.5;
+    }
+
+    .footer strong { color: var(--gray-400); }
+
+    .footer-badge {
+      font-family: var(--f-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      background: rgba(255,184,0,0.1);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+
+    /* ── misc ── */
+    strong { font-weight: 700; }
+    code {
+      font-family: var(--f-mono);
+      font-size: 13px;
+      background: rgba(114,0,202,0.07);
+      color: var(--purple);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .page { padding: 0 20px 80px; }
+      .hero { padding: 44px 20px 40px; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .footer { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar"></div>
+
+  <!-- ── Hero ──────────────────────────── -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">EBAT · Módulo 2 · Bloco 3</div>
+      <h1>TouchDesigner<br><em>e o Grande Formato</em></h1>
+      <p class="hero-sub">Exercício, referências e glossário da Aula 9. Guarda esse link — vai precisar na aula prática e fora dela.</p>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- ══════════════════════════════════ -->
+    <!-- EXERCÍCIO                          -->
+    <!-- ══════════════════════════════════ -->
+    <section class="section" id="exercicio">
+      <div class="section-label">Exercício Prático</div>
+      <div class="section-title">Monte um efeito visual em camadas</div>
+      <p class="section-desc">Um pipeline básico no TouchDesigner: input → processamento → output. A mesma rede muda de cara ao trocar uma conexão ou um parâmetro — e o resultado responde ao vivo, quadro a quadro.</p>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Escolha a fonte</div>
+            <div class="step-time">5 minutos</div>
+            <p>Crie um <strong>Movie File In TOP</strong> (carregando um vídeo ou imagem) ou um <strong>Video Device In TOP</strong> (webcam). Essa é a sua entrada — o sinal cru antes de qualquer processamento.</p>
+
+            <div class="spec-box">
+              <div class="spec-box-header">
+                <span>Pipeline — o esqueleto do exercício</span>
+              </div>
+              <pre><span class="comment"># Sua rede vai seguir essa forma:</span>
+
+INPUT
+<span class="comment">Movie File In TOP  ou  Video Device In TOP</span>
+  ↓
+PROCESSAMENTO
+<span class="comment">1 ou mais TOPs em fila: Level, HSV Adjust,
+Composite, Matte, Feedback...</span>
+  ↓
+OUTPUT
+<span class="comment">Window COMP  ou  viewer principal</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Monte pelo menos duas etapas de processamento</div>
+            <div class="step-time">15 minutos</div>
+            <p>Conecte a fonte a um TOP de ajuste (<code>Level TOP</code> ou <code>HSV Adjust TOP</code>) e depois a um segundo TOP — composição (<code>Composite TOP</code>, <code>Matte TOP</code>) ou feedback (<code>Feedback TOP</code>).</p>
+
+            <div class="callout callout-purple" style="margin-top:16px">
+              <div class="callout-label">Lembrete</div>
+              <p>Cada operador só se conecta com a mesma família por <strong>wire</strong> — puxando a linha da saída de um pra entrada do outro. Aperte <code>p</code> em cima de qualquer operador selecionado pra abrir os parâmetros.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Experimente ao vivo</div>
+            <div class="step-time">10 minutos</div>
+            <p>Troque <strong>uma</strong> conexão ou <strong>um</strong> parâmetro por vez. Observe a resposta antes de mudar a próxima coisa — é assim que você entende o que cada bloco realmente faz.</p>
+
+            <div class="callout callout-yellow" style="margin-top:12px">
+              <div class="callout-label">Se aparecer um erro de "cook dependency"</div>
+              <p>Isso acontece quando a saída de um TOP volta direto pra própria entrada, sem passar por um <code>Feedback TOP</code>. A rede não sabe o que calcular primeiro. Corrija trocando a conexão direta por um Feedback TOP — ele existe exatamente pra isso.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Salve e publique</div>
+            <div class="step-time">5 minutos</div>
+            <p>Exporte um vídeo curto do resultado rodando: menu <strong>File → Movie Export Dialog</strong>, escolha o TOP de saída e a duração.</p>
+            <p style="font-size:14px; color:var(--gray-600); margin-top:8px">Publique o vídeo no Classroom. A direção é sua — o TouchDesigner executa.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════════════════════ -->
+    <!-- REFERÊNCIAS                        -->
+    <!-- ══════════════════════════════════ -->
+    <section class="section" id="refs">
+      <div class="section-label">Referências da Aula</div>
+      <div class="section-title">Para explorar além</div>
+      <p class="section-desc">Do currículo oficial da Derivative aos precursores analógicos dos anos 1960. Por onde começar e por onde ir fundo.</p>
+
+      <!-- Diretas -->
+      <div class="ref-category">
+        <div class="ref-cat-header">
+          <span class="ref-cat-tag">Da Aula 9</span>
+        </div>
+        <div class="ref-list">
+
+          <a class="ref-item" href="https://derivative.ca" target="_blank">
+            <div>
+              <div class="ref-item-name">Derivative — site oficial</div>
+              <div class="ref-item-desc">A empresa canadense por trás do TouchDesigner. Downloads, licenças e novidades.</div>
+              <div class="ref-item-url">derivative.ca</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+          <a class="ref-item" href="https://learn.derivative.ca/courses/100-fundamentals/lessons/101-navigating-the-environment/" target="_blank">
+            <div>
+              <div class="ref-item-name">Curriculum 101 — Navigating the Environment</div>
+              <div class="ref-item-desc">A lição oficial que abriu o laboratório de hoje: interface, operadores, wires e links.</div>
+              <div class="ref-item-url">learn.derivative.ca/.../101-navigating-the-environment</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+          <a class="ref-item" href="https://learn.derivative.ca/courses/100-fundamentals/lessons/102-tops-working-with-images/" target="_blank">
+            <div>
+              <div class="ref-item-name">Curriculum 102 — TOPs: Working with Images</div>
+              <div class="ref-item-desc">A lição oficial da segunda metade: carregar, ajustar, compor, exportar imagem.</div>
+              <div class="ref-item-url">learn.derivative.ca/.../102-tops-working-with-images</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+          <a class="ref-item" href="https://docs.derivative.ca" target="_blank">
+            <div>
+              <div class="ref-item-name">Derivative Wiki — documentação de todos os operadores</div>
+              <div class="ref-item-desc">A referência técnica completa. Primeiro lugar pra checar quando um TOP não se comporta como esperado.</div>
+              <div class="ref-item-url">docs.derivative.ca</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Visuais -->
+      <div class="ref-category">
+        <div class="ref-cat-header">
+          <span class="ref-cat-tag">Visuais · Estúdios de Referência</span>
+        </div>
+        <div class="ref-list">
+
+          <a class="ref-item" href="https://uva.co.uk" target="_blank">
+            <div>
+              <div class="ref-item-name">United Visual Artists (UVA)</div>
+              <div class="ref-item-desc">Referência mundial em instalações audiovisuais de grande escala e cenografia de shows.</div>
+              <div class="ref-item-url">uva.co.uk</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+          <a class="ref-item" href="https://teamlab.art" target="_blank">
+            <div>
+              <div class="ref-item-name">teamLab</div>
+              <div class="ref-item-desc">Coletivo japonês por trás de alguns dos museus digitais imersivos mais visitados do mundo.</div>
+              <div class="ref-item-url">teamlab.art</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Histórico -->
+      <div class="ref-category">
+        <div class="ref-cat-header">
+          <span class="ref-cat-tag">Histórico · Antes do Computador</span>
+        </div>
+        <div class="ref-list">
+
+          <a class="ref-item" href="https://en.wikipedia.org/wiki/Nam_June_Paik" target="_blank">
+            <div>
+              <div class="ref-item-name">Nam June Paik & Shuya Abe — Paik-Abe Video Synthesizer (1969)</div>
+              <div class="ref-item-desc">O aparelho que distorcia e colorizava sinal de vídeo ao vivo, décadas antes de qualquer software. Paik é considerado o pai da videoarte.</div>
+              <div class="ref-item-url">en.wikipedia.org/wiki/Nam_June_Paik</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+          <a class="ref-item" href="https://en.wikipedia.org/wiki/Woody_Vasulka" target="_blank">
+            <div>
+              <div class="ref-item-name">Steina e Woody Vasulka</div>
+              <div class="ref-item-desc">Pioneiros da videoarte que trataram o sinal eletrônico como instrumento de performance ao vivo. Cofundaram o espaço The Kitchen, em Nova York.</div>
+              <div class="ref-item-url">en.wikipedia.org/wiki/Woody_Vasulka</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+          <a class="ref-item" href="https://en.wikipedia.org/wiki/Scanimate" target="_blank">
+            <div>
+              <div class="ref-item-name">Scanimate (anos 1970–80)</div>
+              <div class="ref-item-desc">Sintetizador de vídeo analógico usado nas vinhetas e animações de TV de uma geração — precursor direto do motion graphics em tempo real.</div>
+              <div class="ref-item-url">en.wikipedia.org/wiki/Scanimate</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+          <a class="ref-item" href="https://monoskop.org/Expanded_Cinema" target="_blank">
+            <div>
+              <div class="ref-item-name">Gene Youngblood — Expanded Cinema (1970)</div>
+              <div class="ref-item-desc">O livro que teorizou o cinema saindo do quadro fixo da tela. Base filosófica direta pra tudo que este bloco chama de "além da tela". Leitura livre.</div>
+              <div class="ref-item-url">monoskop.org/Expanded_Cinema</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+          <a class="ref-item" href="https://lzxindustries.net" target="_blank">
+            <div>
+              <div class="ref-item-name">LZX Industries — sintetizadores de vídeo modulares, hoje</div>
+              <div class="ref-item-desc">Módulos de vídeo analógico em formato Eurorack — descendente viva da linhagem Paik-Abe/Vasulka. A estética modular nunca morreu, só ganhou GPU.</div>
+              <div class="ref-item-url">lzxindustries.net</div>
+            </div>
+            <div class="ref-arrow">↗</div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════════════════════ -->
+    <!-- GLOSSÁRIO                          -->
+    <!-- ══════════════════════════════════ -->
+    <section class="section" id="glossario">
+      <div class="section-label">Vocabulário</div>
+      <div class="section-title">Glossário</div>
+      <p class="section-desc">Os termos da aula. Saber o nome certo é o que permite pesquisar, pedir e construir com precisão.</p>
+
+      <div class="gloss-grid">
+        <div class="gloss-card">
+          <div class="gloss-term">TouchDesigner</div>
+          <div class="gloss-def">Ambiente de programação visual baseado em nós, para mídia em tempo real</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Operador (OP)</div>
+          <div class="gloss-def">Cada bloco/função da rede — o equivalente a um módulo de sintetizador</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Network</div>
+          <div class="gloss-def">O espaço onde os operadores se conectam — o "patch" inteiro</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Generator / Filter</div>
+          <div class="gloss-def">Operador só-saída (escuro) vs. operador entrada-e-saída (claro)</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Wire</div>
+          <div class="gloss-def">Conexão entre operadores da mesma família — o "cabo de patch"</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Link</div>
+          <div class="gloss-def">Referência que cruza famílias diferentes — pontilhada, atalho 'x'</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Cooking</div>
+          <div class="gloss-def">O estado de um wire com dado passando ativamente por ele</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">TOP</div>
+          <div class="gloss-def">Texture Operator — família de imagem 2D, acelerada por GPU</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">CHOP</div>
+          <div class="gloss-def">Channel Operator — sinais no tempo: mouse, áudio, sensores</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">SOP</div>
+          <div class="gloss-def">Surface Operator — geometria 3D</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">DAT</div>
+          <div class="gloss-def">Data Operator — texto, tabelas e scripts em Python</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">COMP</div>
+          <div class="gloss-def">Component — contêiner que guarda uma rede inteira dentro de si</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Viewer Active</div>
+          <div class="gloss-def">Flag (+) que permite manipular o conteúdo dentro do visualizador</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Feedback</div>
+          <div class="gloss-def">Devolver a imagem do frame anterior para criar loops e rastros</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Sample rate</div>
+          <div class="gloss-def">Imagens por segundo — como o TouchDesigner pensa o tempo, em vez de "frames"</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Projection mapping</div>
+          <div class="gloss-def">Projetar imagem calibrada sobre uma superfície física irregular</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">VJing</div>
+          <div class="gloss-def">Performance de visuais ao vivo, sincronizada com música</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════════════════════ -->
+    <!-- ATALHOS                            -->
+    <!-- ══════════════════════════════════ -->
+    <section class="section" id="atalhos">
+      <div class="section-label">Mão na Massa</div>
+      <div class="section-title">Atalhos Essenciais</div>
+      <p class="section-desc">Os atalhos que você vai usar em praticamente toda sessão no TouchDesigner. Decorar esses aqui já tira 80% da fricção de navegar a rede.</p>
+
+      <div class="gloss-grid">
+        <div class="gloss-card">
+          <div class="gloss-term">Tab</div>
+          <div class="gloss-def">Abre o OP Create Dialog para criar um operador novo (duplo clique no vazio faz o mesmo)</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">P</div>
+          <div class="gloss-def">Abre os Parameters do operador selecionado</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">H</div>
+          <div class="gloss-def">Home — enquadra toda a rede na tela</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Barra de espaço</div>
+          <div class="gloss-def">Play / Pause da timeline</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Delete / Backspace</div>
+          <div class="gloss-def">Apaga o(s) operador(es) selecionado(s)</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Ctrl/Cmd + C · Ctrl/Cmd + V</div>
+          <div class="gloss-def">Copiar e colar operador(es) selecionado(s)</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Ctrl/Cmd + D</div>
+          <div class="gloss-def">Duplicar o(s) operador(es) selecionado(s)</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Ctrl/Cmd + Z</div>
+          <div class="gloss-def">Desfazer a última ação</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Ctrl/Cmd + S</div>
+          <div class="gloss-def">Salvar o projeto</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Roda do mouse</div>
+          <div class="gloss-def">Zoom in / out na rede</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Clique + arrastar no vazio</div>
+          <div class="gloss-def">Caixa de seleção — seleciona vários operadores de uma vez</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Clique no "+" do operador</div>
+          <div class="gloss-def">Ativa a Viewer Active flag — manipular o conteúdo direto no visualizador</div>
+        </div>
+        <div class="gloss-card">
+          <div class="gloss-term">Botão direito no operador</div>
+          <div class="gloss-def">Menu de contexto — Save Image, opções de exportação e mais</div>
+        </div>
+      </div>
+
+      <div class="callout callout-purple" style="margin-top:16px">
+        <div class="callout-label">Foi além disso?</div>
+        <p>A lista oficial completa de atalhos de teclado do TouchDesigner está documentada na Derivative Wiki — vale consultar quando um atalho específico não estiver aqui.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ── Footer ──────────────────────── -->
+  <div class="footer">
+    <div class="footer-inner">
+      <p>
+        <strong>EBAT · Escola Brasileira de Arte e Tecnologia</strong><br>
+        Módulo 2 · Bloco 3 · TouchDesigner e o Grande Formato<br>
+        ebat.com.br · @ebat.escola
+      </p>
+      <span class="footer-badge">Aula 9</span>
+    </div>
+  </div>
+
+</body>
+</html>
